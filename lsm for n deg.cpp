@@ -27,22 +27,26 @@ int main()
     cout<<"y"<<i<<":";
     cin>>y[i];
   }
-  float C[d][d+1];
+  float C[d+1][d+2];
+  float p=0;
   //generating augmented coeff matrix
-  for(int i=0;i<=d;i++){
-    for(int j=0;j<=d;j++){
-      C[i][j]=0;
-      for(int k=0;k<n;k++){
-        C[i][j]=(C[i][j]+pow(x[k],i+j));
+  for(int i=1;i<=d+1;i++){
+    for(int j=1;j<=d+1;j++){
+      for(int k=1;k<=n;k++){
+        C[i][j]=(C[i][j]+pow(x[k],p+j));
+        if(j==0){
+          C[i][d+2]=(C[i][d+2]+(pow(x[k],p)*y[k]));
+        }
       }
     }
+    p++;
   }
-  for(int i=0;i<=d;i++){
-    int j=d+1;
-    for(int k=0;k<n;k++){
-      C[i][j]=(C[i][j]+(pow(x[k],i)*y[k]));
-    }
-  }
+  // for(int i=0;i<=d;i++){
+  //   int j=d+1;
+  //   for(int k=0;k<n;k++){
+  //     C[i][j]=(C[i][j]+(pow(x[k],i)*y[k]));
+  //   }
+  // }
   //displaying the augmented matrix
   for(int i=0;i<=d;i++){
     for(int j=0;j<=d+1;j++){
@@ -51,15 +55,15 @@ int main()
     cout<<endl;
   }
   //solving the matrix by gauss jordan method
-  for(int j=0;j<d;j++){
+  for(int j=0;j<=d;j++){
     if((fabs(C[j][j])<0.000005)){
       cout<<"pivot element becomes zero.cannot find the solution"<<endl;
       exit(1);
     }
-    for(int i=0;i<d;i++){
+    for(int i=1;i<=d;i++){
       if(i!=j){
         float ratio=C[i][j]/C[j][j];
-        for(int k=0;k<d+1;k++){
+        for(int k=0;k<=d+1;k++){
           C[i][k]=C[i][k]-ratio*C[j][k];
         }
       }
